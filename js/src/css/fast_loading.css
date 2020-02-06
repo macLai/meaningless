@@ -1,0 +1,55 @@
+/*
+########################################
+              MIT License
+
+Copyright (c) 2019 Marc Espín Sanz
+
+License > https://github.com/Graviton-Code-Editor/Graviton-App/blob/master/LICENSE.md
+
+#########################################
+*/
+/* Css that needs to be loaded fast */
+#g_bootanimation {
+  position: fixed;
+  z-index: 100;
+  height: 100%;
+  width: 100%;
+  background: #191919;
+}
+
+#g_bootanimation>img {
+  webkit-user-select: none;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  z-index: 999;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-height: 10%;
+  min-width: 10%;
+  max-width: 200px;
+  max-height: 200px;
+}
+
+#g_bootanimation div {
+  color: white;
+  z-index: 999;
+  position: fixed;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+#g_control_bar>img {
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  padding: 8px;
+  margin: 0;
+  position: absolute;
+  height: 19px;
+}
+

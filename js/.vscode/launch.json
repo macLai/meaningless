@@ -1,0 +1,43 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+    {
+        "name": "Debug Main Process",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceRoot}",
+        "args": [],
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+        "windows": {
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+        },
+        "runtimeArgs": ["-r", "@babel/register", "./main.js", "--enable-logging", "--remote-debugging-port=9223"],
+        "env": {
+            "NODE_ENV": "development",
+            "HOT": "1"
+        },
+        "protocol": "inspector",
+        "sourceMaps": true,
+        "outFiles": [],
+        "stopOnEntry": false
+    },
+    {
+        "name": "Electron: Renderer",
+        "type": "chrome",
+        "request": "attach",
+        "port": 9223,
+        "webRoot": "${workspaceFolder}",
+        "timeout": 30000,
+        "sourceMaps": true,
+    }],
+    "compounds": [
+        {
+            "name": "Electron: All",
+            "configurations": [
+                "Debug Main Process",
+                "Electron: Renderer"
+            ],
+            "preLaunchTask": "npm: compile"
+        }
+    ]
+}
