@@ -41,7 +41,7 @@ app.on('ready', function () {
     protocol: 'file:',
     slashes: true
   }))
-  main.setMenuBarVisibility(path.basename(__dirname) === 'Graviton-Editor') // True = when it's not on production
+  main.setMenuBarVisibility(true)
 })
 app.on('window-all-closed', () => {
   app.quit()
@@ -51,3 +51,8 @@ app.on('before-quit', () => {
   app.close()
 })
 app.commandLine.appendSwitch('disable-smooth-scrolling', 'true')
+app.on('ready', () => {
+  var menuData = require(path.join(__dirname, 'src/javascript/model/menudata'));
+  const menu = Menu.buildFromTemplate(menuData.getMenuTemplate());
+  Menu.setApplicationMenu(menu)
+})
