@@ -1,6 +1,7 @@
 var React = require('react');
 var IScarfWindow = require('./iscarfwindow');
-var TabList = require('../component/tab');
+var TabList = require('./component/tab');
+var StatusBar = require('./statusbar');
 
 class Editor extends React.Component {
     render() {
@@ -8,9 +9,7 @@ class Editor extends React.Component {
             <div className="g_editors" >              
                 <TabList />
                 <IScarfWindow />
-                <div className="g_status_bar" >
-                    <p></p>
-                </div>
+                <StatusBar />
             </div>
         );
     }
