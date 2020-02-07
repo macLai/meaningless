@@ -47,23 +47,16 @@ class Tab extends React.Component {
 
 class TabList extends React.Component{
     componentDidMount() {
-        this.onListDataUpdate();
-        this.onActiveItemUpdate();
-        explorerData.traversalTree(explorerData.dataTree);
-        explorerData.eventEmitter.on(explorerData.EVENT_NAME.DATASTATUS_UPDATE, this.onActiveItemUpdate);
-        explorerData.eventEmitter.on(explorerData.EVENT_NAME.DATASTATUS_UPDATE, this.onListDataUpdate);
+        this.onTabListUpdate();
+        explorerData.eventEmitter.on(explorerData.EVENT_NAME.DATASTATUS_UPDATE, this.onTabListUpdate);
     }
 
     componentWillUnmount() {
-        explorerData.eventEmitter.removeListener(explorerData.EVENT_NAME.DATASTATUS_UPDATE, this.onActiveItemUpdate);
-        explorerData.eventEmitter.removeListener(explorerData.EVENT_NAME.DATASTATUS_UPDATE, this.onListDataUpdate);
+        explorerData.eventEmitter.removeListener(explorerData.EVENT_NAME.DATASTATUS_UPDATE, this.onTabListUpdate);
     }
 
-    onListDataUpdate() {
+    onTabListUpdate() {
         this.setState({data: explorerData.selectedKey});
-    }
-
-    onActiveItemUpdate() {
         this.setState({selectedID: explorerData.activeKey});
     }
 
@@ -73,28 +66,28 @@ class TabList extends React.Component{
             data : [],
             selectedID:""
         };
-        this.onListDataUpdate = this.onListDataUpdate.bind(this);
-        this.onActiveItemUpdate = this.onActiveItemUpdate.bind(this);
+        this.onTabListUpdate = this.onTabListUpdate.bind(this);
     }
 
     render() {
         let data = this.state.data;
         return (
-            <div id= "g_taplist">
-                {
-                    Object.keys(data).map((key)=> {
-                        if (typeof(data[key]) === "string") {
-                            let name = explorerData.getNameByKey(data[key]);
-                            if(data[key] === this.state.selectedID) {
-                                return <Tab isSelected={true} name={name} value={data[key]} />
+            <div className="g_tabs_bar flex smallScrollBar">
+                <div id= "g_taplist">
+                    {
+                        Object.keys(data).map((key)=> {
+                            if (typeof(data[key]) === "string") {
+                                let name = explorerData.getNameByKey(data[key]);
+                                if(data[key] === this.state.selectedID) {
+                                    return <Tab isSelected={true} name={name} value={data[key]} />
+                                }
+                                else {
+                                    return <Tab isSelected={false} name={name} value={data[key]} />;
+                                }
                             }
-                            else {
-                                return <Tab isSelected={false} name={name} value={data[key]} />;
-                            }
-                            
-                        }
-                    })
-                }
+                        })
+                    }
+                </div>
             </div>
         );
     }

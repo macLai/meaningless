@@ -5,10 +5,8 @@ var TabList = require('../component/tab');
 class Editor extends React.Component {
     render() {
         return (
-            <div className="g_editors" >
-                <div className="g_tabs_bar flex smallScrollBar">
-                    <TabList />
-                </div>
+            <div className="g_editors" >              
+                <TabList />
                 <IScarfWindow />
                 <div className="g_status_bar" >
                     <p></p>

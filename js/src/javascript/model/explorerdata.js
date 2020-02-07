@@ -33,7 +33,6 @@ class ExplorerData {
         // data status
         this.selectedKey = [];
         this.activeKey = "";
-        this.keyNameTree = {};
     }
 
     setDataPath(path) {
@@ -49,55 +48,48 @@ class ExplorerData {
             this.activeKey = key;
             var request = {"RequestView": key};
             iScarfData.sendMessage(request);
-            this.eventEmitter.emit(this.EVENT_NAME.DATASTATUS_UPDATE);
         }
+        this.eventEmitter.emit(this.EVENT_NAME.DATASTATUS_UPDATE);
     }
 
     deleteKey(key) {
         var index = this.selectedKey.indexOf(key);
+        if (index === -1) {
+            return;
+        }
         this.selectedKey.splice(index,1);
-        var nextKey = this.activeKey;
         
-        if(key === this.activeKey){
-            nextKey = this.selectedKey[index - 1];
+        if (this.selectedKey.length === 0) {
+            this.eventEmitter.emit(this.EVENT_NAME.DATASTATUS_UPDATE);
+            return;
         }
-        if( index === 0 && key === this.activeKey) {
-            nextKey = this.selectedKey[index];
+
+        if (key === this.activeKey) {
+            index = ((index === 0) ? 0 : (index -1));
+            this.selectKey(this.selectedKey[index]);
+            return;
         }
-        //关闭非activedKey 也需要重新刷新Tab列表 
-        //或则调用selectKey(nextKey),将判断里面的 this.eventEmitter.emit(this.EVENT_NAME.DATASTATUS_UPDATE)放在外面
-        if (this.activeKey != nextKey) {
-            this.activeKey = nextKey;
+        else {
+            this.eventEmitter.emit(this.EVENT_NAME.DATASTATUS_UPDATE);
         }
-        this.eventEmitter.emit(this.EVENT_NAME.DATASTATUS_UPDATE); 
     }
 
     setDataTree(tree) {
         this.dataTree = tree;
-        this.traversalTree(this.dataTree);
         this.eventEmitter.emit(this.EVENT_NAME.DATATREE_UPDATE);
     }
 
-    getNameByKey(keys) {
-        return this.keyNameTree[keys];
-    }
-
-    traversalTree(dataTree) {
-        if(Object.keys(dataTree).length) {
-            Object.keys(dataTree).map((key)=> {
-                if (typeof(dataTree[key]) === "string") {
-                    if(this.keyNameTree !== null) {
-                        if(!this.keyNameTree.hasOwnProperty(key)){
-                            //this.keyNameTree.push({key:dataTree[key]});
-                            this.keyNameTree[key] = dataTree[key];
-                        }
-                    }
-                }
-                else if (typeof(dataTree[key]) === "object") {
-                    this.traversalTree(dataTree[key]);
-                }
-            })        
+    getNameByKey(keys){
+        var name = "";
+        var getname = function(tree) {
+            Object.keys(tree).map((key)=> {
+                if (name != "") return;
+                if (typeof(tree[key]) === "object") getname(tree[key]);
+                else if (key === keys) name = tree[key];
+            })
         }
+        getname(this.dataTree);
+        return name;
     }
 }
 
