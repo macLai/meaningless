@@ -10,6 +10,10 @@ class IScarfWindow extends React.Component {
         iScarfData.setTarget(this.refs.iscarf);
     }
 
+    componentWillUnmount() {
+        iScarfData.setTarget(undefined);
+    }
+
     render() {
         return (
             <div className="g_editors_editors" >
