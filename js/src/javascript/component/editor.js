@@ -1,6 +1,6 @@
 var React = require('react');
 var IScarfWindow = require('./iscarfwindow');
-var TabList = require('./component/tab');
+var TabList = require('./tab');
 var StatusBar = require('./statusbar');
 
 class Editor extends React.Component {

@@ -79,13 +79,13 @@ class ExplorerData {
         this.eventEmitter.emit(this.EVENT_NAME.DATATREE_UPDATE);
     }
 
-    getNameByKey(keys){
+    getNameByKey(key){
         var name = "";
         var getname = function(tree) {
-            Object.keys(tree).map((key)=> {
+            Object.keys(tree).map((keyName)=> {
                 if (name != "") return;
-                if (typeof(tree[key]) === "object") getname(tree[key]);
-                else if (key === keys) name = tree[key];
+                if (typeof(tree[keyName]) === "object") getname(tree[keyName]);
+                else if (keyName === key) name = tree[keyName];
             })
         }
         getname(this.dataTree);
