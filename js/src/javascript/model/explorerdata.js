@@ -48,6 +48,28 @@ class ExplorerData {
             this.activeKey = key;
             var request = {"RequestView": key};
             iScarfData.sendMessage(request);
+        }
+        this.eventEmitter.emit(this.EVENT_NAME.DATASTATUS_UPDATE);
+    }
+
+    deleteKey(key) {
+        var index = this.selectedKey.indexOf(key);
+        if (index === -1) {
+            return;
+        }
+        this.selectedKey.splice(index,1);
+        
+        if (this.selectedKey.length === 0) {
+            this.eventEmitter.emit(this.EVENT_NAME.DATASTATUS_UPDATE);
+            return;
+        }
+
+        if (key === this.activeKey) {
+            index = ((index === 0) ? 0 : (index -1));
+            this.selectKey(this.selectedKey[index]);
+            return;
+        }
+        else {
             this.eventEmitter.emit(this.EVENT_NAME.DATASTATUS_UPDATE);
         }
     }
@@ -57,8 +79,17 @@ class ExplorerData {
         this.eventEmitter.emit(this.EVENT_NAME.DATATREE_UPDATE);
     }
 
-    getNameByKey(key) {
-        
+    getNameByKey(key){
+        var name = "";
+        var getname = function(tree) {
+            Object.keys(tree).map((keyName)=> {
+                if (name != "") return;
+                if (typeof(tree[keyName]) === "object") getname(tree[keyName]);
+                else if (keyName === key) name = tree[keyName];
+            })
+        }
+        getname(this.dataTree);
+        return name;
     }
 }
 
